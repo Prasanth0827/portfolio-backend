@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const API_URL = 'http://localhost:5000/api';
+// const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://portfolio-backend-lkeg.onrender.com/api';
 
 async function createSpidyUser() {
   console.log('🕷️  Creating Spidy User...\n');
