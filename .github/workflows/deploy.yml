@@ -1,0 +1,73 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linter
+      run: npm run lint --if-present
+
+    - name: Run tests
+      run: npm test
+      env:
+        NODE_ENV: test
+        MONGO_URI: ${{ secrets.TEST_MONGO_URI }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        ALLOW_REGISTER: false
+
+  deploy:
+    name: Deploy to Render
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Trigger Render Deployment
+      run: |
+        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+      
+    - name: Deployment Status
+      run: |
+        echo "✅ Deployment triggered successfully!"
+        echo "🚀 Your app will be live in a few minutes"
+        echo "🔗 Check status at: https://dashboard.render.com"
+
+  notify:
+    name: Send Notification
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+    - name: Deployment Success
+      if: success()
+      run: |
+        echo "🎉 Deployment completed successfully!"
+        echo "✅ All tests passed"
+        echo "🚀 Application is now live"
+
+    - name: Deployment Failed
+      if: failure()
+      run: |
+        echo "❌ Deployment failed!"
+        echo "🔍 Check the logs above for details"
+
