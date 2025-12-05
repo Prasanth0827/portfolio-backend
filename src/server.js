@@ -22,7 +22,11 @@ app.use(helmet());
 
 // CORS configuration
 const corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
+  origin: [
+    process.env.CLIENT_ORIGIN || 'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:3000', 'https://portfolio-backend-lkeg.onrender.com'
+  ],
   credentials: true,
   optionsSuccessStatus: 200
 };
