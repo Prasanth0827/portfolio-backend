@@ -1,6 +1,7 @@
 const axios = require('axios');
 
-const API_URL = 'http://localhost:5000/api';
+// const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://portfolio-backend-lkeg.onrender.com/api';
 
 async function createAdmin() {
   console.log('🔐 Creating Admin User...\n');
@@ -21,15 +22,16 @@ async function createAdmin() {
     console.log(`   Name: ${response.data.data.user.name}`);
     console.log(`   Email: ${response.data.data.user.email}`);
     console.log(`   Role: ${response.data.data.user.role}\n`);
-    console.log('🚀 You can now login at: http://localhost:5173/login\n');
+    // console.log('🚀 You can now login at: http://localhost:5173/login\n');
+    console.log('🚀 You can now login at: https://portfolio-frontend-dbxg.onrender.com/login\n');
     console.log('⚠️  IMPORTANT: After first login, set ALLOW_REGISTER=false in .env for security!');
   } catch (error) {
     console.error('❌ Error creating admin user:\n');
-    
+
     if (error.response) {
       console.error(`   Status: ${error.response.status}`);
       console.error(`   Message: ${error.response.data.error || error.response.data.message}`);
-      
+
       if (error.response.status === 400 && error.response.data.error?.includes('already exists')) {
         console.log('\n✅ Admin user already exists! Use these credentials to login:');
         console.log('   Email: admin@portfolio.com');
@@ -43,7 +45,7 @@ async function createAdmin() {
     } else {
       console.error(`   ${error.message}`);
     }
-    
+
     process.exit(1);
   }
 }
