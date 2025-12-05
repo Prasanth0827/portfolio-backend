@@ -25,7 +25,9 @@ const corsOptions = {
   origin: [
     process.env.CLIENT_ORIGIN || 'http://localhost:3000',
     'http://localhost:5173',
-    'http://localhost:3000', 'https://portfolio-backend-lkeg.onrender.com'
+    'http://localhost:3000',
+    'https://portfolio-backend-lkeg.onrender.com',
+    'https://portfolio-frontend-dbxg.onrender.com'
   ],
   credentials: true,
   optionsSuccessStatus: 200
